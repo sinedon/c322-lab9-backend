@@ -1,5 +1,8 @@
 package edu.iu.habahram.ducksservice.repository;
+
 import edu.iu.habahram.ducksservice.model.Customer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +15,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Component
 public class CustomerRepository {
@@ -30,7 +31,7 @@ public class CustomerRepository {
     }
 
     private static final String NEW_LINE = System.lineSeparator();
-    private static final String DATABASE_NAME = "ducks/customers.txt";
+    private static final String DATABASE_NAME = "guitars/customers.txt";
     private static void appendToFile(Path path, String content)
             throws IOException {
         Files.write(path,
@@ -49,11 +50,7 @@ public class CustomerRepository {
         BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
         String passwordEncoded = bc.encode(customer.password());
         String data = customer.username() + ","
-                + customer.password()// (THIS IS ONLY TEMPORARY!)
-                                      // we should never store the plain password.
-                                      // In the next step in this lab,
-                                      // we will encode the password
-                                      //before saving it to the file
+                + passwordEncoded
                + "," + customer.email();
         appendToFile(path, data + NEW_LINE);
     }
